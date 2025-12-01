@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <title>Lyrics Trainer – “This Is the Moment”</title>
+    <link rel="icon" type="image/png" href="icon-192.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="playlist-styles.css" />
+    <link rel="manifest" href="manifest.json" />
+</head>
+<body>
+<header>
+    <h1>Lyrics Trainer</h1>
+    <button id="themeToggle" aria-label="Toggle theme" title="Toggle theme">🌙</button>
+</header>
+
+<div id="lyrics-source" class="lyrics-source">
+    <button id="uploadBtn" class="secondary-btn">Upload Lyrics (.txt/.lrc)</button>
+    <input type="file" id="fileInput" accept=".txt,.lrc" hidden>
+    <button id="uploadAudioBtn" class="secondary-btn">Upload Audio (optional)</button>
+    <input type="file" id="audioInput" accept="audio/*" hidden>
+    <button id="resetBtn" class="secondary-btn" hidden>Reset to Default</button>
+    <span id="currentSource" class="source-label">Default Lyrics</span>
+</div>
+
+<div id="playlist-view" class="playlist-view"></div>
+
+<div id="loading" class="status-message">Loading lyrics...</div>
+<div id="error" class="status-message error" hidden></div>
+
+<div id="content" hidden>
+    <div id="audio-player-container" hidden>
+        <audio id="audioPlayer" controls></audio>
+    </div>
+    <div id="lyrics-box" aria-live="polite"></div>
+    <div id="counter" aria-hidden="true"></div>
+
+<!-- jump slider -->
+<input type="range" id="seek"
+       aria-label="Seek lyric line"
+       role="slider" aria-valuemin="1" aria-valuemax="1" aria-valuenow="1" />
+
+<!-- auto‑advance controls -->
+<section class="auto">
+    <label for="delayRange">
+        Auto‑advance every <span id="delayLabel">3</span> s
+    </label>
+    <input type="range" id="delayRange" min="0.5" max="10" step="0.5" value="3"
+           aria-label="Auto‑advance delay (seconds)" />
+    <button id="playPauseBtn" aria-pressed="false">Play ▶️</button>
+</section>
+
+    <!-- manual nav buttons -->
+    <section class="nav">
+        <button id="prevBtn" aria-label="Previous line">Previous</button>
+        <button id="nextBtn" aria-label="Next line">Next</button>
+    </section>
+</div>
+
+<script src="script.js" type="module"></script>
+<script>
+    /* PWA install / offline */
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js');
+    }
+</script>
+<script type="module">
+    // Import and initialize playlist component
+    import { PlaylistComponent } from './playlist-component.js';
+    
+    // Wait for the main script to load first
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            if (window.loadLyricsFromPath) {
+                window.playlistComponent = new PlaylistComponent('playlist-view', window.loadLyricsFromPath);
+            }
+        }, 100);
+    });
+</script>
+</body>
+</html>
