@@ -15,3 +15,34 @@ yarn-error.log*
 
 # Generated files
 public/script.js
+
+# Test coverage
+coverage/
+*.lcov
+.nyc_output/
+
+# Environment files
+.env
+.env.local
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+*.log
+logs/
+
+# Build files
+dist/
+build/
+
+# OS files
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+.cache/
